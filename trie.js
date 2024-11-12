@@ -26,6 +26,9 @@ class Trie {
 
   searchPrefix(prefix, node = this.root, idx = 0) {
     if (idx > prefix.length - 1) {
+      if (!node.letters.size) {
+        return false;
+      }
       return true;
     } else {
       let letter = prefix[idx];
@@ -108,16 +111,16 @@ class Trie {
   }
 }
 
-// let t = new Trie();
-// t.insert("ant");
-// t.insert("a");
-// t.insert("an");
-// t.insert("all");
-// t.insert("almost");
-// t.insert("ants");
-// t.insert("and");
-// t.insert("dad");
-// t.insert("do");
-// t.insert("door");
+let t = new Trie();
+t.insert("ant");
+t.insert("a");
+t.insert("an");
+t.insert("all");
+t.insert("almost");
+t.insert("ants");
+t.insert("and");
+t.insert("dad");
+t.insert("do");
+t.insert("door");
 
 module.exports = { Trie };

@@ -6,7 +6,7 @@ describe("Trie", function () {
     t = new Trie();
     t.insert("ant");
     t.insert("an");
-    t.insert("all");
+    t.insert("alone");
     t.insert("almost");
     t.insert("ants");
     t.insert("and");
@@ -31,12 +31,19 @@ describe("Trie", function () {
   });
 
   test("search for prefix", function () {
-    const prefixInTrie = t.searchPrefix("alm");
+    const prefixInTrie = t.searchPrefix("al");
     expect(prefixInTrie).toBe(true);
   });
 
   test("search for prefix fails if prefix does not exist", function () {
     const prefixInTrie = t.searchPrefix("be");
+    expect(prefixInTrie).toBe(false);
+  });
+
+  test("search for prefix fails if input is a complete word with no letters after it", function () {
+    const wordInTrie = t.searchWord("almost");
+    expect(wordInTrie).toBe(true);
+    const prefixInTrie = t.searchPrefix("almost");
     expect(prefixInTrie).toBe(false);
   });
 
@@ -96,6 +103,24 @@ describe("Trie", function () {
     expect(wordInTrie2).toBe(true);
   });
 
+  test("if a deleted word shares a prefix with another word, leaves prefix and other words that stem from prefix alone", function () {
+    const prefixInTrie = t.searchPrefix("al");
+    expect(prefixInTrie).toBe(true);
+    const wordInTrie = t.searchWord("alone");
+    expect(wordInTrie).toBe(true);
+    const wordInTrie2 = t.searchWord("almost");
+    expect(wordInTrie2).toBe(true);
+
+    t.deleteWord("almost");
+
+    const prefixInTrie2 = t.searchPrefix("al");
+    expect(prefixInTrie2).toBe(true);
+    const wordInTrie3 = t.searchWord("alone");
+    expect(wordInTrie3).toBe(true);
+    const wordInTrie4 = t.searchWord("almost");
+    expect(wordInTrie4).toBe(false);
+  });
+
   test("if all words that stem from prefix are deleted, then the prefix is deleted as well", function () {
     const wordInTrie = t.searchWord("do");
     expect(wordInTrie).toBe(true);
@@ -128,7 +153,7 @@ describe("Trie", function () {
       "ant",
       "ants",
       "and",
-      "all",
+      "alone",
       "almost",
       "dad",
       "do",
