@@ -31,13 +31,13 @@ describe("Trie", function () {
   });
 
   test("search for prefix", function () {
-    const wordInTrie = t.searchPrefix("alm");
-    expect(wordInTrie).toBe(true);
+    const prefixInTrie = t.searchPrefix("alm");
+    expect(prefixInTrie).toBe(true);
   });
 
   test("search for prefix fails if prefix does not exist", function () {
-    const wordInTrie = t.searchPrefix("be");
-    expect(wordInTrie).toBe(false);
+    const prefixInTrie = t.searchPrefix("be");
+    expect(prefixInTrie).toBe(false);
   });
 
   test("insert word", function () {
