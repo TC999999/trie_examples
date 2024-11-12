@@ -121,18 +121,18 @@ describe("Trie", function () {
     expect(wordInTrie4).toBe(false);
   });
 
-  test("if all words that stem from prefix are deleted, then the prefix is deleted as well", function () {
-    const wordInTrie = t.searchWord("do");
-    expect(wordInTrie).toBe(true);
-    const prefixInTrie = t.searchPrefix("do");
+  test("if all words that stem from a prefix are deleted, then the prefix is deleted as well", function () {
+    const prefixInTrie = t.searchPrefix("al");
     expect(prefixInTrie).toBe(true);
-    const wordInTrie2 = t.searchWord("door");
+    const wordInTrie = t.searchWord("alone");
+    expect(wordInTrie).toBe(true);
+    const wordInTrie2 = t.searchWord("almost");
     expect(wordInTrie2).toBe(true);
 
-    t.deleteWord("do");
-    t.deleteWord("door");
+    t.deleteWord("alone");
+    t.deleteWord("almost");
 
-    const prefixInTrie2 = t.searchPrefix("do");
+    const prefixInTrie2 = t.searchPrefix("al");
     expect(prefixInTrie2).toBe(false);
   });
 
