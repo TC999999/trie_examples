@@ -42,7 +42,6 @@ class Trie {
       return node.end;
     } else {
       let letter = word[idx];
-      console.log("current Letter: ", letter);
       if (!node.letters.get(letter)) {
         return false;
       }
@@ -109,14 +108,16 @@ class Trie {
   }
 }
 
-let t = new Trie();
-t.insert("ant");
-t.insert("a");
-t.insert("an");
-t.insert("all");
-t.insert("almost");
-t.insert("ants");
-t.insert("and");
-t.insert("dad");
-t.insert("do");
-t.insert("door");
+// let t = new Trie();
+// t.insert("ant");
+// t.insert("a");
+// t.insert("an");
+// t.insert("all");
+// t.insert("almost");
+// t.insert("ants");
+// t.insert("and");
+// t.insert("dad");
+// t.insert("do");
+// t.insert("door");
+
+module.exports = { Trie };
