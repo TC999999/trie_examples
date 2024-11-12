@@ -10,6 +10,7 @@ class Trie {
     this.root = new Node();
   }
 
+  //Inserts a word into the trie, adds new nodes for each letter if one does not already exist
   insert(word, node = this.root, idx = 0) {
     if (idx > word.length - 1) {
       node.end = true;
@@ -24,6 +25,7 @@ class Trie {
     }
   }
 
+  //Searches for a specific prefix. If the input is a complete word with no letter nodes, returns false
   searchPrefix(prefix, node = this.root, idx = 0) {
     if (idx > prefix.length - 1) {
       if (!node.letters.size) {
@@ -40,6 +42,7 @@ class Trie {
     }
   }
 
+  //Searches for a spefific word, returns whether the last letter node is the end of a word
   searchWord(word, node = this.root, idx = 0) {
     if (idx > word.length - 1) {
       return node.end;
@@ -53,6 +56,7 @@ class Trie {
     }
   }
 
+  //deletes whole word, if word shares prefix with other words, leaves prefix and words alone. If word shares no other words with a prefix, deletes prefix.
   deleteWord(
     word,
     node = this.root,
@@ -85,6 +89,7 @@ class Trie {
     }
   }
 
+  //depth first search method for all words in the trie
   dfs(node = this.root, newStr = "", arr = []) {
     for (let letter of node.letters) {
       if (letter[1].end) {
@@ -95,6 +100,7 @@ class Trie {
     return arr;
   }
 
+  //depth first search method for all words that begin with specified prefix in the trie, returns empty array if word or prefix does not exist
   autoComplete(str, node = this.root, idx = 0) {
     if (idx > str.length - 1) {
       let returnArr = this.dfs(node, str);

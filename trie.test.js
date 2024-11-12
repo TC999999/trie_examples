@@ -141,6 +141,11 @@ describe("Trie", function () {
     expect(autoArr).toEqual(["an", "ant", "ants", "and"]);
   });
 
+  test("autoComplete returns array of length one when the inputted prefix does not share its prefix with other words", function () {
+    const autoArr = t.autoComplete("and");
+    expect(autoArr).toEqual(["and"]);
+  });
+
   test("input for nonexistent prefix in autoComplete function returns empty array", function () {
     const autoArr = t.autoComplete("be");
     expect(autoArr).toEqual([]);
