@@ -80,7 +80,7 @@ describe("Trie", function () {
     expect(wordInTrie).toBe(false);
   });
 
-  test("if word is a prefix, leaves words that stem from it alone", function () {
+  test("if a deleted word is a prefix, leaves prefix and words that stem from prefix alone", function () {
     const prefixInTrie = t.searchWord("ant");
     expect(prefixInTrie).toBe(true);
     const wordInTrie = t.searchWord("ants");
@@ -96,7 +96,7 @@ describe("Trie", function () {
     expect(wordInTrie2).toBe(true);
   });
 
-  test("if all words that stem from prefix are deleted, then prefix is deleted as well", function () {
+  test("if all words that stem from prefix are deleted, then the prefix is deleted as well", function () {
     const wordInTrie = t.searchWord("do");
     expect(wordInTrie).toBe(true);
     const prefixInTrie = t.searchPrefix("do");
@@ -121,7 +121,7 @@ describe("Trie", function () {
     expect(autoArr).toEqual([]);
   });
 
-  test("empty string input in autoComplete returns returns all words found via depth first search", function () {
+  test("empty string input in autoComplete returns returns all words found via depth first search method", function () {
     const autoArr = t.autoComplete("");
     expect(autoArr).toEqual([
       "an",
