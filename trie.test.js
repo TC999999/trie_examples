@@ -15,145 +15,115 @@ describe("Trie", function () {
     t.insert("door");
   });
 
-  test("search for word in trie", function () {
-    const wordInTrie = t.searchWord("almost");
-    expect(wordInTrie).toBe(true);
+  test("searchWord() returns true if inputted word is in trie", function () {
+    expect(t.searchWord("almost")).toBeTruthy();
   });
 
-  test("search for word fails if word is incomplete", function () {
-    const wordInTrie = t.searchWord("almos");
-    expect(wordInTrie).toBe(false);
+  test("searchWord() returns false if word is incomplete", function () {
+    expect(t.searchWord("almos")).toBeFalsy();
   });
 
-  test("search for word fails if complete word is not in trie", function () {
-    const wordInTrie = t.searchWord("before");
-    expect(wordInTrie).toBe(false);
+  test("searchWord() returns false if complete word is not in trie", function () {
+    expect(t.searchWord("before")).toBeFalsy();
   });
 
-  test("search for prefix", function () {
-    const prefixInTrie = t.searchPrefix("al");
-    expect(prefixInTrie).toBe(true);
+  test("searchPrefix() returns true if prefix is in trie and not a complete word", function () {
+    expect(t.searchPrefix("al")).toBeTruthy();
   });
 
-  test("search for prefix fails if prefix does not exist", function () {
-    const prefixInTrie = t.searchPrefix("be");
-    expect(prefixInTrie).toBe(false);
+  test("searchPrefix() returns false if prefix does not exist in trie", function () {
+    expect(t.searchPrefix("be")).toBeFalsy();
   });
 
-  test("search for prefix fails if input is a complete word with no letters after it", function () {
-    const wordInTrie = t.searchWord("almost");
-    expect(wordInTrie).toBe(true);
-    const prefixInTrie = t.searchPrefix("almost");
-    expect(prefixInTrie).toBe(false);
+  test("searchPrefix() returns true if inputted string is a complete word with letters after it", function () {
+    expect(t.searchWord("an")).toBeTruthy();
+    expect(t.searchPrefix("an")).toBeTruthy();
   });
 
-  test("insert word", function () {
+  test("searchPrefix() returns false if inputted string is a complete word with no letters after it", function () {
+    expect(t.searchWord("almost")).toBeTruthy();
+    expect(t.searchPrefix("almost")).toBeFalsy();
+  });
+
+  test("insert() inserts a new word into the trie", function () {
+    expect(t.searchWord("before")).toBeFalsy();
     t.insert("before");
-    const wordInTrie = t.searchWord("before");
-    expect(wordInTrie).toBe(true);
+    expect(t.searchWord("before")).toBeTruthy();
   });
 
-  test("can make prefixes into words", function () {
-    const prefixInTrie = t.searchPrefix("a");
-    expect(prefixInTrie).toBe(true);
-    const wordInTrie = t.searchWord("a");
-    expect(wordInTrie).toBe(false);
+  test("insert() can make already existing prefixes into words", function () {
+    expect(t.searchPrefix("a")).toBeTruthy();
+    expect(t.searchWord("a")).toBeFalsy();
+
     t.insert("a");
-
-    const wordInTrie2 = t.searchWord("a");
-    expect(wordInTrie2).toBe(true);
+    expect(t.searchWord("a")).toBeTruthy();
   });
 
-  test("insert new words with already existing prefixes", function () {
-    const prefixInTrie = t.searchPrefix("ant");
-    expect(prefixInTrie).toBe(true);
-    const wordInTrie = t.searchWord("anthill");
-    expect(wordInTrie).toBe(false);
+  test("insert() makes new words with already existing prefixes", function () {
+    expect(t.searchPrefix("ant")).toBeTruthy();
+    expect(t.searchWord("anthill")).toBeFalsy();
 
     t.insert("anthill");
-
-    const wordInTrie2 = t.searchWord("anthill");
-    expect(wordInTrie2).toBe(true);
+    expect(t.searchWord("anthill")).toBeTruthy();
   });
 
-  test("delete existing word", function () {
+  test("delete() removes an existing word from the trie", function () {
+    expect(t.searchWord("almost")).toBeTruthy();
     t.deleteWord("almost");
-    const wordInTrie = t.searchWord("almost");
-    expect(wordInTrie).toBe(false);
+    expect(t.searchWord("almost")).toBeFalsy();
   });
 
-  test("fails to delete nonexistent word", function () {
-    const wordInTrie = t.deleteWord("before");
-    expect(wordInTrie).toBe(false);
+  test("delete() returns false if attempting to delete a nonexistent word", function () {
+    expect(t.deleteWord("before")).toBeFalsy();
   });
 
-  test("if a deleted word is a prefix, leaves prefix and words that stem from prefix alone", function () {
-    const prefixInTrie = t.searchWord("ant");
-    expect(prefixInTrie).toBe(true);
-    const wordInTrie = t.searchWord("ants");
-    expect(wordInTrie).toBe(true);
+  test("delete(): if a deleted word is a prefix, leaves prefix and words that stem from prefix alone", function () {
+    expect(t.searchWord("an")).toBeTruthy();
+    expect(t.searchWord("ant")).toBeTruthy();
+    expect(t.searchWord("ants")).toBeTruthy();
 
-    t.deleteWord("ant");
-
-    const prefixInTrie2 = t.searchWord("ant");
-    expect(prefixInTrie2).toBe(false);
-    const prefixInTrie3 = t.searchPrefix("ant");
-    expect(prefixInTrie3).toBe(true);
-    const wordInTrie2 = t.searchWord("ants");
-    expect(wordInTrie2).toBe(true);
+    t.deleteWord("an");
+    expect(t.searchWord("an")).toBeFalsy();
+    expect(t.searchPrefix("an")).toBeTruthy();
+    expect(t.searchWord("ant")).toBeTruthy();
+    expect(t.searchWord("ants")).toBeTruthy();
   });
 
-  test("if a deleted word shares a prefix with another word, leaves prefix and other words that stem from prefix alone", function () {
-    const prefixInTrie = t.searchPrefix("al");
-    expect(prefixInTrie).toBe(true);
-    const wordInTrie = t.searchWord("alone");
-    expect(wordInTrie).toBe(true);
-    const wordInTrie2 = t.searchWord("almost");
-    expect(wordInTrie2).toBe(true);
+  test("delete(): if a deleted word shares a prefix with another word, leaves prefix and other words that stem from prefix alone", function () {
+    expect(t.searchPrefix("al")).toBeTruthy();
+    expect(t.searchWord("alone")).toBeTruthy();
+    expect(t.searchWord("almost")).toBeTruthy();
 
     t.deleteWord("almost");
-
-    const prefixInTrie2 = t.searchPrefix("al");
-    expect(prefixInTrie2).toBe(true);
-    const wordInTrie3 = t.searchWord("alone");
-    expect(wordInTrie3).toBe(true);
-    const wordInTrie4 = t.searchWord("almost");
-    expect(wordInTrie4).toBe(false);
+    expect(t.searchPrefix("al")).toBeTruthy();
+    expect(t.searchWord("alone")).toBeTruthy();
+    expect(t.searchWord("almost")).toBeFalsy();
   });
 
-  test("if all words that stem from a prefix are deleted, then the prefix is deleted as well", function () {
-    const prefixInTrie = t.searchPrefix("al");
-    expect(prefixInTrie).toBe(true);
-    const wordInTrie = t.searchWord("alone");
-    expect(wordInTrie).toBe(true);
-    const wordInTrie2 = t.searchWord("almost");
-    expect(wordInTrie2).toBe(true);
+  test("delete(): if all words that stem from a prefix are deleted, then the prefix is deleted as well", function () {
+    expect(t.searchPrefix("al")).toBeTruthy();
+    expect(t.searchWord("alone")).toBeTruthy();
+    expect(t.searchWord("almost")).toBeTruthy();
 
     t.deleteWord("alone");
     t.deleteWord("almost");
-
-    const prefixInTrie2 = t.searchPrefix("al");
-    expect(prefixInTrie2).toBe(false);
+    expect(t.searchPrefix("al")).toBeFalsy();
   });
 
-  test("autoComplete returns all words that share the inputted prefix with a depth first search method", function () {
-    const autoArr = t.autoComplete("an");
-    expect(autoArr).toEqual(["an", "ant", "ants", "and"]);
+  test("autoComplete() returns all words that share the inputted prefix with a depth first search method", function () {
+    expect(t.autoComplete("an")).toEqual(["an", "ant", "ants", "and"]);
   });
 
-  test("autoComplete returns array of length one when the inputted prefix does not share its prefix with other words", function () {
-    const autoArr = t.autoComplete("and");
-    expect(autoArr).toEqual(["and"]);
+  test("autoComplete() returns array with a length of one when the inputted prefix does not share its prefix with other words", function () {
+    expect(t.autoComplete("and")).toEqual(["and"]);
   });
 
-  test("input for nonexistent prefix in autoComplete function returns empty array", function () {
-    const autoArr = t.autoComplete("be");
-    expect(autoArr).toEqual([]);
+  test("autoComplete() returns an empty array for nonexistent prefix input", function () {
+    expect(t.autoComplete("be")).toEqual([]);
   });
 
-  test("empty string input in autoComplete returns returns all words found via depth first search method", function () {
-    const autoArr = t.autoComplete("");
-    expect(autoArr).toEqual([
+  test("autoComplete() returns an array with all words in the trie found via depth first search method when the input is an empty string", function () {
+    expect(t.autoComplete("")).toEqual([
       "an",
       "ant",
       "ants",
